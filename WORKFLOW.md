@@ -64,10 +64,14 @@ running the chats (the user) is the only one who runs commands, commits and push
   then `scampy` (alias for `conda activate scamppe`). Do not mix with
   `module load python`; if conda fails with "No module named encodings",
   `unsetenv PYTHONHOME PYTHONPATH`.
-- **Laptop (the middle man for file transfers):** macOS with zsh (bash works too).
-  Add `source ~/workbench/local_env.sh` to `~/.zshrc` (and `~/.bashrc` if you use bash);
-  copy `ssh_config.example` into `~/.ssh/config` (after `mkdir -p ~/.ssh/cm`) so one
-  login with Duo per host is reused by every later `ssh`/`scp` for 8 hours. Then:
+- **Laptop (the middle man for file transfers):** macOS, bash or zsh (`echo $SHELL`).
+  Add `source ~/workbench/local_env.sh` to `~/.bash_profile` (bash on macOS) or
+  `~/.zshrc` (zsh). SSH: if `~/.ssh/config` already has `Host derecho`/`Host izumi`
+  entries, keep them and only add what `ssh_config.example` has that they lack
+  (`User jet`, connection sharing via `ControlMaster`/`ControlPersist`, keep-alives);
+  otherwise copy the example in. Always use the aliases (`derecho:`, `izumi:`), not
+  full host names, so `User jet` applies. A separate alias pinned to one login node
+  (e.g. `Host dtmux` -> `derecho3.hpc.ucar.edu`) is for the tmux session. Then:
   `to_derecho FILE... [-d DIR]` / `to_izumi ...` (copy, then print md5 to compare),
   `from_derecho PATH`, `latest` (newest downloads), `chk FILE` (md5).
 - **Stuck paste mode:** if pasted text arrives wrapped in `00~ ... 01~` (or
