@@ -1,0 +1,20 @@
+# Add to ~/.ssh/config on the laptop (create ~/.ssh/cm first: mkdir -p ~/.ssh/cm).
+# One login (password + Duo) per host is then reused by every later ssh/scp for
+# up to 8 hours, so to_derecho / to_izumi don't prompt each time.
+# "derecho3" pins one login node, where your tmux session lives.
+
+Host derecho
+    HostName derecho3.hpc.ucar.edu
+    User jet
+    ControlMaster auto
+    ControlPath ~/.ssh/cm/%r@%h:%p
+    ControlPersist 8h
+    ServerAliveInterval 60
+
+Host izumi
+    HostName izumi.cgd.ucar.edu
+    User jet
+    ControlMaster auto
+    ControlPath ~/.ssh/cm/%r@%h:%p
+    ControlPersist 8h
+    ServerAliveInterval 60

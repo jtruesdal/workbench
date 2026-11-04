@@ -1,0 +1,20 @@
+# conda environment for the SCAM PPE / input-stash scripts (same on Derecho and Izumi)
+#   create:  conda env create -f ~/workbench/environment.yml
+#   update:  conda env update -f ~/workbench/environment.yml --prune
+#   use:     conda activate scamppe        (alias: scampy, from scam_env.csh)
+# Do not combine with "module load python" (PYTHONHOME/PYTHONPATH break conda).
+name: scamppe
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy
+  - scipy
+  - xarray
+  - netcdf4
+  - cftime
+  - matplotlib
+  - nco
+  - esmf
+  - esmpy
+  - pip
