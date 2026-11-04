@@ -23,12 +23,21 @@ running the chats (the user) is the only one who runs commands, commits and push
 
 ## 3. Working conventions
 
-- **Shell:** login shell is tcsh. Start every shell or tmux window with
-  `source ~/workbench/scam_env.csh` (sets `CAMROOT`, `PP`, `TD`, `CC`, `PR`,
-  `PBS_ACCOUNT`, ...). Commands use these variables and absolute paths, never
-  "cd there first". In tcsh: `set` is shell-only, `setenv` is exported; `!` is
-  special even in single quotes; heredocs use an unquoted `EOF` with no `$`,
-  backslash or `!` in the body; redirect with `>&`.
+- **Shell:** login shell is tcsh. `source ~/workbench/scam_env.csh` in each shell or
+  tmux window for the aliases (`scampy`, `scamtmux`, `fixpaste`), `PBS_ACCOUNT` and
+  interactive shortcuts. In tcsh: `set` is shell-only, `setenv` is exported; `!` is
+  special even in single quotes; redirect with `>&`.
+- **Paths:** commands written by a chat use **absolute paths** (or `git -C <path>`),
+  never shell variables and never "cd there first". Reasons: tcsh `set` variables
+  (`CAMROOT`, `TD`, `CC`, ...) are empty inside `bash -c '...'`, scripts and batch jobs;
+  the same name points to different trees per machine; and `CAMROOT` is the CAM-1
+  checkout, not StormSPEED. Each `STATUS.md` row names its checkouts by absolute path.
+- **Files, then run:** anything longer than a line or two is delivered in two steps:
+  (1) `cat > ~/ss_tools/NAME << EOF` ... `EOF` to write the file (unquoted `EOF`; no `$`,
+  backslash or `!` in the body), then (2) a separate short command that runs it, with the
+  expected output stated. Larger payloads go as a file copied from the laptop
+  (`to_derecho`/`to_izumi`), or as base64 with a checksum check before running.
+  Keep single command lines short; long ones overflow the terminal.
 - **One step at a time:** one command block per turn, with the expected output
   stated; wait for the result before the next step. Read-only investigation
   first, until a plan is agreed.
