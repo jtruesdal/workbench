@@ -50,9 +50,10 @@ alias scampy 'conda activate scamppe'
 alias scamtmux 'tmux new -A -s scam'
 # Turn off a stuck bracketed-paste mode (pastes arrive as 00~ ... 01~)
 alias fixpaste 'printf "\033[?2004l"'
-
-echo "scam_env: $WB_MACHINE  CAMROOT=$CAMROOT"
-echo "          TD=$TD:t"
-echo "          CC=$CC:t"
+if ($?prompt) then
+    echo "scam_env: $WB_MACHINE  CAMROOT=$CAMROOT"
+    echo "          TD=$TD:t"
+    echo "          CC=$CC:t"
+endif
 _wb_end:
 unset _h
