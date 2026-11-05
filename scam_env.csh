@@ -50,10 +50,14 @@ alias scampy 'conda activate scamppe'
 alias scamtmux 'tmux new -A -s scam'
 # Turn off a stuck bracketed-paste mode (pastes arrive as 00~ ... 01~)
 alias fixpaste 'printf "\033[?2004l"'
-if ($?prompt) then
+# Only in interactive shells: there tty names the terminal; non-interactive shells
+# (ssh host cmd, scp, batch) have it empty.  ($?prompt is set in both on Derecho.)
+if ( $?tty ) then
+  if ( "$tty" != "" ) then
     echo "scam_env: $WB_MACHINE  CAMROOT=$CAMROOT"
     echo "          TD=$TD:t"
     echo "          CC=$CC:t"
+  endif
 endif
 _wb_end:
 unset _h
