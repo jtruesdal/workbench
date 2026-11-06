@@ -60,6 +60,24 @@ running the chats (the user) is the only one who runs commands, commits and push
   done, what is uncommitted where, what is running, decisions, next steps.
 - The user commits and pushes; the next chat reads it from GitHub.
 
+## 4b. Evening checkpoint and morning check
+
+**Evening**, in each chat with work in flight:
+
+> We're breaking for the night. Prepare a checkpoint patch for the workbench: update this
+> workstream's STATUS.md row (state, what's running, next steps) and `checks/<workstream>.sh`
+> with read-only commands for everything we're waiting on (cs.status paths, expected results).
+> Add a handoff only if the state changed a lot.
+
+Apply the patches (one `git apply` each), commit and push once.
+
+**Morning**, from the laptop: `wbcheck` (both machines, or `wbcheck izumi`). It pulls the
+workbench on each machine and runs every `checks/*.sh`. Paste a workstream's section into its
+chat:
+
+> Good morning. Here is this morning's wbcheck output for this workstream: <paste>. Where do we stand,
+> and what's next?
+
 ## 5. Persistent environment
 
 - **tmux:** always log in to the same Derecho login node (e.g.

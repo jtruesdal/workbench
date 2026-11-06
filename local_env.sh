@@ -47,3 +47,15 @@ chk() {
         else printf '%s  %s\n' "$(md5 -q "$f")" "$f"; fi
     done
 }
+
+# Morning check: every workstream's checks/<workstream>.sh on Derecho and Izumi (read-only).
+# wbcheck            both machines
+# wbcheck izumi      one machine
+wbcheck() {
+    local h
+    [ $# -eq 0 ] && set -- derecho izumi
+    for h in "$@"; do
+        ssh "$h" "bash ~/workbench/checks/run.sh $h"
+        echo
+    done
+}
