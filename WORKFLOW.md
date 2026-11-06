@@ -71,6 +71,27 @@ running the chats (the user) is the only one who runs commands, commits and push
 
 Apply the patches (one `git apply` each), commit and push once.
 
+**How the chat delivers its checkpoint** (same in every chat). A checkpoint changes only the
+chat's own `STATUS.md` row, appends its Inbox notes, and adds or edits its own files
+(`checks/<workstream>.sh`, `handoffs/...`). The chat makes the patch against the current `main`,
+checks it with `git apply --check`, presents it as `<workstream>_checkpoint_YYYY-MM-DD.patch` and
+gives its md5. Workbench commits are made only on Derecho. Then, for each patch:
+
+1. Laptop: `to_derecho ~/Downloads/<patch>` (lands in `~/inbox`; the md5 must match the chat's).
+2. Derecho:
+   ```
+   git --no-pager -C ~/workbench pull --ff-only
+   git --no-pager -C ~/workbench apply ~/inbox/<patch>
+   git -C ~/workbench add -A
+   git -C ~/workbench commit -q -m "<workstream>: checkpoint YYYY-MM-DD"
+   git --no-pager -C ~/workbench log --oneline -3
+   ```
+3. After the last workbench commit of the evening, push once: `git -C ~/workbench push`.
+
+Apply each patch with its own `apply` command. If one fails because another chat changed the same
+or a neighbouring line of `STATUS.md` (the patch's context lines include the rows next to its own),
+tell that chat; it regenerates its patch against the current `main`.
+
 **Morning**, from the laptop: `wbcheck` (both machines, or `wbcheck izumi`). It pulls the
 workbench on each machine and runs every `checks/*.sh`. Paste a workstream's section into its
 chat:
