@@ -8,7 +8,7 @@ echo "== test: $N"
 echo "== queue"
 qstat -u "$USER" 2>/dev/null | tail -n +4
 echo "== TestStatus"
-grep -E 'RUN|COMPARE' "$T/TestStatus"
+grep -E 'RUN|COMPARE|BASELINE|GENERATE' "$T/TestStatus"
 echo "== TDIFF/QDIFF lines in TestStatus.log"
 grep -E 'TDIFF|QDIFF' "$T/TestStatus.log" | tail -3
 H="$T/run/$N.cam.h1i.2002-01-01-00000.nc"

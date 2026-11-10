@@ -13,7 +13,8 @@ import argparse, glob, os, sys
 import numpy as np
 from netCDF4 import Dataset
 
-SITES = {'Manus': (-2.06, 147.43), 'Nauru': (-0.521, 166.916), 'Darwin': (-12.425, 130.892)}
+SITES = {'Manus': (-2.06, 147.43), 'Nauru': (-0.521, 166.916), 'Darwin': (-12.425, 130.892),
+         'Barrow': (71.323, 203.389), 'SGP': (36.6336386049331, 263.170820393250)}
 TD = ('/glade/derecho/scratch/jet/SCT_D_Ln48.ne30_ne30_mg17.F2000climo_SROF.'
       'derecho_intel.cam-scm_prep_ERAnudge_derecho.sctc01')
 DOM = '/glade/campaign/cesm/cesmdata/inputdata/share/domains/domain.lnd.ne30_gx1v7.171003.nc'
