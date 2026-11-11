@@ -1,9 +1,10 @@
-# For ~/.ssh/config on the laptop. If you already have Host derecho / Host izumi
-# entries, merge: keep yours and add only the options below that they lack.
-# Otherwise append this (create ~/.ssh/cm first: mkdir -p ~/.ssh/cm).
+# For ~/.ssh/config on the laptop. If you already have entries for derecho and
+# izumi, merge: keep yours and add only the options below that they lack.
+# Otherwise copy this file (create ~/.ssh/cm first: mkdir -p ~/.ssh/cm).
 # One login (password + Duo) per host is then reused by every later ssh/scp for
 # up to 8 hours, so to_derecho / to_izumi don't prompt each time.
 # "derecho3" pins one login node, where your tmux session lives.
+# Note: options above the first Host line apply to every host; put none there.
 
 Host derecho
     HostName derecho3.hpc.ucar.edu
@@ -14,9 +15,20 @@ Host derecho
     ServerAliveInterval 60
 
 Host izumi
+    # Outside CGD's network (home, travel), izumi is reachable only through
+    # goldhill: uncomment the next line and the goldhill entry below.
+    # ProxyJump goldhill
     HostName izumi.cgd.ucar.edu
     User jet
     ControlMaster auto
     ControlPath ~/.ssh/cm/%r@%h:%p
     ControlPersist 8h
     ServerAliveInterval 60
+
+# Host goldhill
+#     HostName goldhill.cgd.ucar.edu
+#     User jet
+#     ControlMaster auto
+#     ControlPath ~/.ssh/cm/%r@%h:%p
+#     ControlPersist 8h
+#     ServerAliveInterval 60
