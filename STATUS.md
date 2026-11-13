@@ -52,12 +52,12 @@ Notes left by one chat for another workstream. The receiving chat clears its ite
 - **housekeeping ← cam-pr1643:** `test_driver.sh` runs `create_test --retry 2`; on derecho its retry pass resubmitted
   tests still waiting in the queue, so two jobs ran in one case (Nov 5: CONUS, GPU test). For CAM PR testing the
   stormspeed procedure (`create_test` in `qcmd`, no `--retry`, `-j 8`) avoided that and the build-node OOM kills.
-- **scam-container ← stormspeed:** Izumi initialization cost, relevant to input-stash: the CMIP6 emission files are classic
-  netCDF with an UNLIMITED time dimension, so `tracer_data`'s read of each file's time axis touches the whole file (~700 MB;
-  ~100 s cold over nfs-fs, 0.2 s cached). `nccopy -u` makes the time axis contiguous (identical data; 0.016 s read). A
-  mirror input root with the 47 such files of the ne3pg3 FHISTC_LTso case converted is at `/project/amp/jet/inputdata_fast`
-  (use `DIN_LOC_ROOT`). Derecho optimized ne3pg3: CAM init 79 s + first physics pass 20 s + CTSM `init_interp` 12 s of
-  128 s; debug adds little. `tracer_data` also opens each emission file twice.
+- **scam-container ← stormspeed:** fast input-data mirrors (classic UNLIMITED-time files converted with `nccopy -u`,
+  identical answers) on Izumi (`/project/amp/jet/inputdata_fast`) and Derecho (`/glade/campaign/cgd/amp/jet/inputdata_fast`);
+  use via `DIN_LOC_ROOT`. Izumi RUN 4124 -> 248 s; Derecho CAM init 94 -> 25 s. How to add a SCAM case's files:
+  `handoffs/2026-11-13_fast-inputdata.md`.
+- **scam-ppe ← stormspeed:** the same mirrors speed up every CAM/SCAM initialization; for noise-floor and PPE members set
+  `DIN_LOC_ROOT` to the mirror (after adding the case's files, see `handoffs/2026-11-13_fast-inputdata.md`).
 - **housekeeping ← stormspeed:** Izumi `nfs-fs` (/fs/cgd/csm) showed read RTT 100-240 ms (nfs-amp: 3-4 ms) and ~30 MB/s on
   2026-11-12; report to CGD IS. Also the earlier MVAPICH2 note ("bug fixed in 2.3.4") is not supported by the tests; the
   request for 2.3.7 builds for Intel/NAG still makes sense, but not on that ground alone.
