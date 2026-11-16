@@ -52,12 +52,26 @@ running the chats (the user) is the only one who runs commands, commits and push
 - **AI sandbox:** the AI keeps its own clone of the relevant branches, dry-runs
   edits and scripts there, and answers code questions from it instead of asking
   the user to run lookups.
+- **Clean up as you go:** every chat keeps track of the directories it creates
+  (checkouts, test roots, scratch copies, tar backups, case directories) and, once
+  their work is finished (tagged, merged, superseded), removes them rather than leaving
+  them for later. Before removing anything: `scripts/clean_check.sh PATH...`
+  (read-only: size; for Git checkouts uncommitted changes, commits on no remote, stashes).
+  For checkouts marked `KEEP?`, `scripts/keep_inspect.sh` shows whether each local-only
+  commit already exists remotely under another hash; anything genuinely local is saved
+  with `scripts/archive_local.sh <dir>/archive_patches_YYYY-MM-DD CHECKOUT...` (patches and
+  diffs, a few kB instead of GB) before the checkout is deleted. A directory worth
+  keeping only for a few changes is better kept as a patch. Directories belonging to
+  another workstream are not removed: note them in that row's Inbox instead.
 
 ## 4. End of a chat, or a hand-off
 
 - Update the workstream's row in `STATUS.md`: state, next step, open questions.
 - For larger transitions write `handoffs/YYYY-MM-DD_<workstream>.md`: what was
   done, what is uncommitted where, what is running, decisions, next steps.
+- Clean up: list the directories this chat created; remove the finished ones (after
+  `clean_check.sh`, and `archive_local.sh` for local-only work); name the ones kept, and
+  why, in the row or the handoff.
 - The user commits and pushes; the next chat reads it from GitHub.
 
 ## 4b. Evening checkpoint and morning check

@@ -61,3 +61,11 @@ Notes left by one chat for another workstream. The receiving chat clears its ite
 - **housekeeping ← stormspeed:** Izumi `nfs-fs` (/fs/cgd/csm) showed read RTT 100-240 ms (nfs-amp: 3-4 ms) and ~30 MB/s on
   2026-11-12; report to CGD IS. Also the earlier MVAPICH2 note ("bug fixed in 2.3.4") is not supported by the tests; the
   request for 2.3.7 builds for Intel/NAG still makes sense, but not on that ground alone.
+- **housekeeping ← stormspeed:** Derecho `/glade/campaign/cgd/amp/jet/collections` cleanup 2026-11-16: 68 finished
+  checkouts and scratch files (~47 GB) reviewed and removed with the new scripts; local-only work saved in `collections/archive_patches_2026-11-16/`). Left for
+  their owners to decide: SE-dycore unification (`stormspeed_build*`, `stormspeed_build*.tar` ~7 GB, `e3sm_ref`, `check`,
+  `unify_se_dycore.py`, `finish_unify_se.py`, `fetch_and_package.py`, `*_context.txt`); compassdev
+  (`cam6_4_207_compass.100926.tar` 2.8 GB, `cam6_4_207_compassdev.102726`); CLUBB-MF (`clubb_mf_ccpp_bstephens.102126`);
+  #1643 precursors (`fix_shared_read_and_carry`, `cam6_4_203_stormspeed_fix_init_oom_clubbmf.100126`,
+  `cam6_4_211_plus_oom.101426`). New rule in `WORKFLOW.md` §3/§4 and `scripts/clean_check.sh`, `keep_inspect.sh`,
+  `archive_local.sh`.
