@@ -38,6 +38,11 @@ running the chats (the user) is the only one who runs commands, commits and push
   expected output stated. Larger payloads go as a file copied from the laptop
   (`to_derecho`/`to_izumi`), or as base64 with a checksum check before running.
   Keep single command lines short; long ones overflow the terminal.
+- **Unique file names:** every file handed over for download gets a name not used
+  before in any chat (a version or date suffix: `fastroot_v3.tar.gz`,
+  `workbench_cleanup_rule_2026-11-16.patch`). The Mac renames a repeated download to
+  `name (1).ext`, so a reused name can send the old file. State the file's md5 (or
+  another checksum) and have it checked on arrival.
 - **One step at a time:** one command block per turn, with the expected output
   stated; wait for the result before the next step. Read-only investigation
   first, until a plan is agreed.
