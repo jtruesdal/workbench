@@ -69,3 +69,6 @@ Notes left by one chat for another workstream. The receiving chat clears its ite
   #1643 precursors (`fix_shared_read_and_carry`, `cam6_4_203_stormspeed_fix_init_oom_clubbmf.100126`,
   `cam6_4_211_plus_oom.101426`). New rule in `WORKFLOW.md` §3/§4 and `scripts/clean_check.sh`, `keep_inspect.sh`,
   `archive_local.sh`.
+- **stormspeed-unify ← stormspeed:** welcome to the Project. Read `handoffs/2026-11-16_stormspeed-to-unify.md` (workflow,
+  StormSPEED state incl. ss.08 and the kept shared-memory code, HOMME pin, baselines, fast input data, your directories
+  to clean up), and add your own row to this table in your first end-of-session patch.
