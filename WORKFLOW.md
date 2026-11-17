@@ -52,7 +52,7 @@ running the chats (the user) is the only one who runs commands, commits and push
 - **Builds:** never on a login node. Derecho: `qcmd` (in tmux, or backgrounded
   with `>& log &`; test suites get 5 h). Izumi: a batch job (`echo "cmd" | qsub ...`),
   no additional interactive jobs.
-- **Jobs:** tests use `job_priority=premium` on Derecho (`./xmlchange JOB_PRIORITY=premium`).
+- **Jobs:** all Derecho jobs and tests run at `job_priority=premium` (`./xmlchange JOB_PRIORITY=premium` before submitting; Derecho refuses to change it with `qalter`, so a queued job must be deleted and resubmitted).
   Keep walltimes realistic; long requests wait behind reservations.
 - **AI sandbox:** the AI keeps its own clone of the relevant branches, dry-runs
   edits and scripts there, and answers code questions from it instead of asking
