@@ -17,6 +17,5 @@ qstat -u "$USER" 2>/dev/null | awk '$1 ~ /^[0-9]/ { split($1, a, "."); print "JO
 find "$scr" -maxdepth 1 -name 'cs.status.*' -mtime -"$days" 2>/dev/null | sort | while read -r f; do
   id=${f##*/cs.status.}
   case "$id" in *.*) continue ;; esac          # skip cs.status.<id>.<extra> helpers
-  bash "$f" 2>/dev/null | awk -v id="$id" '$NF == "RUN" || ($(NF-1) == "RUN") || ($0 ~ / RUN( |$)/) {
-      st = $1; name = $2; if (st == "PASS" || st == "FAIL" || st == "PEND") print "RUN", id, st, name }'
+  bash "$f" 2>/dev/null | awk -v id="$id" '$1 ~ /^(PASS|FAIL|PEND)$/ && $3 == "RUN" { print "RUN", id, $1, $2 }'
 done
