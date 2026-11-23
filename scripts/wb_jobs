@@ -1,0 +1,22 @@
+#!/bin/bash
+# wb_jobs: print this machine's batch jobs and recent test results in the form the
+# work dashboard's paste box reads.  Paste the whole output into the dashboard.
+#   WBJOBS <machine> <time>
+#   JOB <jobid> <state Q/R/H/E> <queue> <name>
+#   RUN <testid> <PASS|FAIL|PEND> <test name>     (cs.status.* files from the last N days)
+# Usage: wb_jobs [days]        (default 3; set WB_SCRATCH to override the scratch dir)
+days=${1:-3}
+h=$(hostname)
+case "$h" in
+  derecho*|dec*|deg*) m=derecho; scr=${WB_SCRATCH:-/glade/derecho/scratch/$USER} ;;
+  izumi*)             m=izumi;   scr=${WB_SCRATCH:-/scratch/cluster/$USER} ;;
+  *)                  m=${h%%.*}; scr=${WB_SCRATCH:-$HOME} ;;
+esac
+echo "WBJOBS $m $(date +%Y-%m-%dT%H:%M)"
+qstat -u "$USER" 2>/dev/null | awk '$1 ~ /^[0-9]/ { split($1, a, "."); print "JOB", a[1], $10, $3, $4 }'
+find "$scr" -maxdepth 1 -name 'cs.status.*' -mtime -"$days" 2>/dev/null | sort | while read -r f; do
+  id=${f##*/cs.status.}
+  case "$id" in *.*) continue ;; esac          # skip cs.status.<id>.<extra> helpers
+  bash "$f" 2>/dev/null | awk -v id="$id" '$NF == "RUN" || ($(NF-1) == "RUN") || ($0 ~ / RUN( |$)/) {
+      st = $1; name = $2; if (st == "PASS" || st == "FAIL" || st == "PEND") print "RUN", id, st, name }'
+done

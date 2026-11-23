@@ -69,6 +69,31 @@ running the chats (the user) is the only one who runs commands, commits and push
   keeping only for a few changes is better kept as a patch. Directories belonging to
   another workstream are not removed: note them in that row's Inbox instead.
 
+## 3b. Live work dashboard
+
+The dashboard (https://claude.ai/artifact/DxGoMeayCYyjPbcsQCVh9D, private to John) shows every task and job
+across the chats, live. **Each chat keeps its own cards current on its own**, using the Artifact tool's
+database actions (`write_db` / `read_db` on that url); no patch or push is involved.
+
+- **Tasks** (`tasks/<id>`, id = the STATUS.md row name, e.g. `stormspeed-unify`): `title`, `summary` (the
+  task in one line), `previous`, `current`, `next` (one line each, about 150 characters at most), `state`
+  (`active`, `waiting`, `blocked`, `idle`, `done`), `machine`, `branch`, `chat`, `updated` (ISO time), and
+  `commands`: the commands waiting for John, each `{cmd, purpose, expect}`; clear them once run.
+- **Parallel tasks:** when work inside a chat splits into threads that progress separately (a diagnosis
+  waiting on jobs while a refactor goes on), add one card per thread with `parent` = the row's id and id
+  `<row>-<short-name>`; set it to `done` when the thread ends.
+- **Jobs** (`jobs/<machine>-<jobid>`, e.g. `derecho-8267191`): add one when a job is submitted, with
+  `jobid`, `machine`, `queue`, `task` (card id), `testid`, `test` (a distinctive part of the test or case
+  name), `check_cmd` (what to run when it finishes), `state` `queued`, `updated`. When results are read,
+  set `state` `analyzed` and `result` (`PASS`/`FAIL` or a few words).
+- **When to write:** at the start of a session (`state` active, `current`), after each step (lines and
+  `commands`), on every job submitted or analyzed, and at the end (`state`, `next`).
+- **Job states from the machines:** `scripts/wb_jobs` on Derecho or Izumi prints the queue and recent
+  `cs.status` results; John pastes its output into the dashboard's box, which marks jobs queued, running,
+  or finished (ready to analyze). A chat that sees `qstat` or `cs.status` output updates the jobs itself.
+- **Checkpoints:** the STATUS.md row is written from the card, so the two agree; the dashboard is the live
+  view, STATUS.md and the handoffs the durable record.
+
 ## 4. End of a chat, or a hand-off
 
 - Update the workstream's row in `STATUS.md`: state, next step, open questions.
