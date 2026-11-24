@@ -96,6 +96,11 @@ database actions (`write_db` / `read_db` on that url); no patch or push is invol
   lines), and the dashboard's paste box fills them in, registering any job no chat had registered
   (task "unassigned"). If you see a job number in pasted output first, add it yourself (`jobid`).
   When results are read, set `state` `analyzed` and `result` (`PASS`/`FAIL` or a few words).
+- **Test ids** (`testids/<testid>`, e.g. `testids/sima9a`): register each test id when you hand over the
+  command that creates it, with `summary` (one line: what it tests and what result is expected),
+  `task` (card id), `machine`, `state` `active`, `updated`. Set `state` `done` (and say the verdict in
+  `summary`) once its results are read. The dashboard lists active test ids alphabetically, with
+  their job status; test ids that appear only on jobs show as "no summary yet".
 - **Work log** (`log/<id>`, id `<card-prefix>-<yyyymmdd>-<hhmm>`): one entry per finished step or
   result, `{task: <card id>, time: <ISO time with offset>, text: <one or two sentences>, jobs: <machine and
   job ids or test ids, if any>}`. It is the timestamped summary of the work on each task, Derecho and Izumi
