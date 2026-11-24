@@ -4,6 +4,7 @@
 #   WBJOBS <machine> <time>
 #   JOB <jobid> <state Q/R/H/E> <queue> <name>
 #   RUN <testid> <PASS|FAIL|PEND> <test name>     (cs.status.* files from the last N days)
+#   CASE <testid> <jobid> <case directory name>   (job ids CIME recorded for those cases)
 # Usage: wb_jobs [days]        (default 3; set WB_SCRATCH to override the scratch dir)
 days=${1:-3}
 h=$(hostname)
@@ -18,4 +19,11 @@ find "$scr" -maxdepth 1 -name 'cs.status.*' -mtime -"$days" 2>/dev/null | sort |
   id=${f##*/cs.status.}
   case "$id" in *.*) continue ;; esac          # skip cs.status.<id>.<extra> helpers
   bash "$f" 2>/dev/null | awk -v id="$id" '$1 ~ /^(PASS|FAIL|PEND)$/ && $3 == "RUN" { print "RUN", id, $1, $2 }'
+  # The job ids CIME recorded for this test id's cases (JOB_IDS in env_*.xml)
+  for c in "$scr"/*."$id"; do
+    [ -d "$c" ] || continue
+    j=$(grep -ho 'id="JOB_IDS" value="[^"]*"' "$c"/env_*.xml 2>/dev/null | head -1 | sed 's/.*value="//; s/"$//')
+    jid=$(echo "$j" | tr ',' '\n' | grep -E 'case\.(test|run):' | head -1 | sed 's/.*://; s/\..*//; s/ //g')
+    [ -n "$jid" ] && echo "CASE $id $jid ${c##*/}"
+  done
 done

@@ -88,19 +88,23 @@ database actions (`write_db` / `read_db` on that url); no patch or push is invol
 - **Parallel tasks:** when work inside a chat splits into threads that progress separately (a diagnosis
   waiting on jobs while a refactor goes on), add one card per thread with `parent` = the row's id and id
   `<row>-<short-name>`; set it to `done` when the thread ends.
-- **Jobs** (`jobs/<machine>-<jobid>`, e.g. `derecho-8267191`): add one when a job is submitted, with
-  `jobid`, `machine`, `queue`, `task` (card id), `testid`, `test` (a distinctive part of the test or case
-  name), `check_cmd` (what to run when it finishes), `state` `queued`, `updated`. When results are read,
-  set `state` `analyzed` and `result` (`PASS`/`FAIL` or a few words).
+- **Jobs:** register a job **when you give John the command that submits it**, without waiting for
+  its job number: id `<machine>-<testid>-<short>` (e.g. `derecho-sima8a-ers`), `state` `pending`,
+  `machine`, `task` (card id), `testid`, `test` (a distinctive part of the case name, e.g. the
+  testmods suffix, so `CASE` lines can be matched), `check_cmd`, `updated`. The job number then
+  arrives by itself: `wb_jobs` reports the ids CIME recorded for each test id's cases (`CASE`
+  lines), and the dashboard's paste box fills them in, registering any job no chat had registered
+  (task "unassigned"). If you see a job number in pasted output first, add it yourself (`jobid`).
+  When results are read, set `state` `analyzed` and `result` (`PASS`/`FAIL` or a few words).
 - **Work log** (`log/<id>`, id `<card-prefix>-<yyyymmdd>-<hhmm>`): one entry per finished step or
   result, `{task: <card id>, time: <ISO time with offset>, text: <one or two sentences>, jobs: <machine and
   job ids or test ids, if any>}`. It is the timestamped summary of the work on each task, Derecho and Izumi
   jobs included; the dashboard shows it under each card, newest first.
 - **When to write:** at the start of a session (`state` active, `current`), after each step (lines and
   `commands`, plus a log entry), on every job submitted or analyzed, and at the end (`state`, `next`).
-- **Job states from the machines:** `scripts/wb_jobs` on Derecho or Izumi prints the queue and recent
-  `cs.status` results; John pastes its output into the dashboard's box, which marks jobs queued, running,
-  or finished (ready to analyze). A chat that sees `qstat` or `cs.status` output updates the jobs itself.
+- **Job states from the machines:** `scripts/wb_jobs` on Derecho or Izumi prints the queue, recent
+  `cs.status` results and the job ids of those cases; John pastes its output into the dashboard's box,
+  which fills in job ids and marks jobs queued, running, or finished (ready to analyze). A chat that sees `qstat` or `cs.status` output updates the jobs itself.
 - **Checkpoints:** the STATUS.md row is written from the card, so the two agree; the dashboard is the live
   view, STATUS.md and the handoffs the durable record.
 
