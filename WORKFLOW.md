@@ -27,11 +27,17 @@ running the chats (the user) is the only one who runs commands, commits and push
   tmux window for the aliases (`scampy`, `scamtmux`, `fixpaste`), `PBS_ACCOUNT` and
   interactive shortcuts. In tcsh: `set` is shell-only, `setenv` is exported; `!` is
   special even in single quotes; redirect with `>&`.
-- **Paths:** commands written by a chat use **absolute paths** (or `git -C <path>`),
-  never shell variables and never "cd there first". Reasons: tcsh `set` variables
-  (`CAMROOT`, `TD`, `CC`, ...) are empty inside `bash -c '...'`, scripts and batch jobs;
-  the same name points to different trees per machine; and `CAMROOT` is the CAM-1
-  checkout, not StormSPEED. Each `STATUS.md` row names its checkouts by absolute path.
+- **Shared variables:** `paths.list` names the common places once (`$WB`, `$INBOX`, `$SCR`,
+  `$CASES`, `$COLL`, `$CAMROOT`, `$SIMA`, `$SIMAHOMME`, `$UNIFY`, ...), with a value per machine.
+  tcsh gets them from `scam_env.csh`, bash (Derecho/Izumi windows) from `hpc_env.sh` (add
+  `source ~/workbench/hpc_env.sh` to `~/.bashrc`); both **export** them, so they also work in
+  `bash -c`, scripts and batch jobs. To add one, edit `paths.list`, commit, pull, re-source.
+- **Commands that work in either shell:** commands from a chat use only these shared variables
+  or absolute paths (`git -C <path>`, never "cd there first"), and nothing shell-specific
+  inline: no variable assignments (`X=...` / `set X = ...`), no loops, no `2>&1` or `>&`, no
+  `$(...)` (backquotes work in both). Anything needing those goes in a script run with
+  `bash script.sh`, or inside `bash -c '...'`. The older tcsh `set` shortcuts (`TD`, `CC`, `PR`,
+  ...) are interactive conveniences only and are not used in chat commands.
 - **Files, then run:** anything longer than a line or two is delivered in two steps:
   (1) `cat > ~/ss_tools/NAME << EOF` ... `EOF` to write the file (unquoted `EOF`; no `$`,
   backslash or `!` in the body), then (2) a separate short command that runs it, with the
@@ -175,8 +181,8 @@ chat:
   by a remote program that ended abruptly. Run `fixpaste` in that shell (defined
   on the laptop by `local_env.sh` and on Derecho/Izumi by `scam_env.csh`), or
   `printf '\033[?2004l'`, then paste again.
-- **Shells:** zsh on the laptop and tcsh on Derecho/Izumi. Commands from the chats are
-  written for tcsh on the HPC side and for zsh/bash on the laptop; no need to switch.
+- **Shells:** zsh on the laptop; tcsh or bash windows on Derecho/Izumi. Chat commands for the
+  HPC side work in both (see "Commands that work in either shell"); laptop commands are zsh/bash.
 - **Machine notes:**
   - Izumi PIO is built without netCDF-4 type support: files with `int64`
     variables fail to open (error -45). The Izumi ERA5 nudging copy has

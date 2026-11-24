@@ -26,6 +26,14 @@ else
    goto _wb_end
 endif
 
+# Shared variables (same names and values in bash: hpc_env.sh), exported so they
+# also work in scripts, bash -c and batch jobs.  Edit paths.list to change them.
+if ( -r $HOME/workbench/paths.list ) then
+   awk -v m=$WB_MACHINE -v sh=csh -f $HOME/workbench/scripts/paths_select.awk $HOME/workbench/paths.list >! /tmp/wbpaths.$$.csh
+   source /tmp/wbpaths.$$.csh
+   rm -f /tmp/wbpaths.$$.csh
+endif
+
 set PP = $CAMROOT/tools/ppe
 set WB = ~/workbench
 

@@ -1,0 +1,16 @@
+# paths.list -- workbench variables shared by tcsh and bash on Derecho and Izumi.
+# One line per variable:  NAME  <derecho value>  <izumi value>   ("-" = not on that machine).
+# A leading ~ means $HOME.  Read by scam_env.csh (tcsh) and hpc_env.sh (bash), which
+# export them (setenv / export), so they also work in scripts, bash -c and batch jobs.
+# To add or change one: edit this file, commit, pull on the other machine, re-source.
+#
+# NAME       derecho                                                          izumi
+WB           ~/workbench                                                      ~/workbench
+INBOX        ~/inbox                                                          ~/inbox
+SCR          /glade/derecho/scratch/jet                                       /scratch/cluster/jet
+CASES        /glade/campaign/cgd/amp/jet/cases                                /project/amp/jet/cases
+COLL         /glade/campaign/cgd/amp/jet/collections                          /project/amp/jet/collections
+CAMROOT      /glade/campaign/cgd/amp/jet/collections/cam6_4_207_compassdev.102726  /project/amp/jet/collections/cam6_4_207_compass.100926
+SIMA         /glade/campaign/cgd/amp/jet/collections/stormspeed_sima.111626   -
+SIMAHOMME    /glade/campaign/cgd/amp/jet/collections/stormspeed_sima.111626/src/dynamics/se/homme  -
+UNIFY        /glade/campaign/cgd/amp/jet/collections/stormspeed_unify.101626  -
