@@ -86,8 +86,12 @@ database actions (`write_db` / `read_db` on that url); no patch or push is invol
   `jobid`, `machine`, `queue`, `task` (card id), `testid`, `test` (a distinctive part of the test or case
   name), `check_cmd` (what to run when it finishes), `state` `queued`, `updated`. When results are read,
   set `state` `analyzed` and `result` (`PASS`/`FAIL` or a few words).
+- **Work log** (`log/<id>`, id `<card-prefix>-<yyyymmdd>-<hhmm>`): one entry per finished step or
+  result, `{task: <card id>, time: <ISO time with offset>, text: <one or two sentences>, jobs: <machine and
+  job ids or test ids, if any>}`. It is the timestamped summary of the work on each task, Derecho and Izumi
+  jobs included; the dashboard shows it under each card, newest first.
 - **When to write:** at the start of a session (`state` active, `current`), after each step (lines and
-  `commands`), on every job submitted or analyzed, and at the end (`state`, `next`).
+  `commands`, plus a log entry), on every job submitted or analyzed, and at the end (`state`, `next`).
 - **Job states from the machines:** `scripts/wb_jobs` on Derecho or Izumi prints the queue and recent
   `cs.status` results; John pastes its output into the dashboard's box, which marks jobs queued, running,
   or finished (ready to analyze). A chat that sees `qstat` or `cs.status` output updates the jobs itself.
