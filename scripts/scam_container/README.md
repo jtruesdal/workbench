@@ -17,6 +17,7 @@ Builds go through `qcmd` (Derecho); hand-made SCAM/3D pairs run without archivin
 | `check_sct.sh [ID]` | queue, `RUN`/`COMPARE` status, `TDIFF`/`QDIFF` line, CAMIOP file and its `scm_*` fields |
 | `sct_errors.sh [ID]` | first errors and log tails of the 3D (`run/`) and SCAM (`run/case2run/`) halves |
 | `sct_align.py TESTDIR` | SCAM vs 3D at the column, step by step: first differing field, first-step profiles |
+| `sct_diffs.py ID [SCRATCH]` | max `TDIFF`/`QDIFF` of every `SCT` test with test id ID (Derecho default; Izumi: `/scratch/cluster/jet`) |
 | `iop_profile.py TESTDIR` | first step, level by level: SCAM `T`/`Q`/`PS` vs the CAMIOP file (physics and dynamics column) |
 
 ## Hand-made SCAM/3D pairs (Barrow)
